@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stealth Fingerprint Results</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; background: #f8f9fa; }
+    h1 { color: #333; }
+    pre { background: #eee; padding: 1rem; border-radius: 5px; overflow-x: auto; }
+    .status { font-weight: bold; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>🕵️‍♂️ Stealth Fingerprint</h1>
+  <p>This page demonstrates browser fingerprinting results using multiple entropy sources.</p>
+  <h3>Result:</h3>
+  <pre id="result">Loading...</pre>
+  <div class="status" id="status"></div>
+
+  <script src="fingerprint.js"></script>
+  <script>
+    (async () => {
+      const fingerprint = await generateFingerprint();
+      const isIncognito = await detectIncognito();
+      const currentFingerprint = fingerprint.combinedFingerprint;
+      const previousFingerprint = localStorage.getItem('userFingerprint');
+      localStorage.setItem('userFingerprint', currentFingerprint);
+
+      const sameUser = previousFingerprint === currentFingerprint;
+      const status = sameUser ? 
+        "✅ Known user detected (same fingerprint)." :
+        "🆕 New user detected (new fingerprint).";
+
+      const output = {
+        ...fingerprint,
+        isIncognito,
+        sameUser,
+        timestamp: new Date().toISOString()
+      };
+
+      document.getElementById('result').textContent = JSON.stringify(output, null, 2);
+      document.getElementById('status').textContent = status;
+    })();
+  </script>
+</body>
+</html>
